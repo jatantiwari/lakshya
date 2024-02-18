@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/lakshya/static/css/main.93d07772.css",
+    "main.js": "/lakshya/static/js/main.47dfed93.js",
+    "static/js/787.30b79000.chunk.js": "/lakshya/static/js/787.30b79000.chunk.js",
+    "index.html": "/lakshya/index.html",
+    "main.93d07772.css.map": "/lakshya/static/css/main.93d07772.css.map",
+    "main.47dfed93.js.map": "/lakshya/static/js/main.47dfed93.js.map",
+    "787.30b79000.chunk.js.map": "/lakshya/static/js/787.30b79000.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.93d07772.css",
+    "static/js/main.47dfed93.js"
+  ]
+}
