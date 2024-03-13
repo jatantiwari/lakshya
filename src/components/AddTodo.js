@@ -6,7 +6,7 @@ const AddTodo = (props) => {
     props.setShowForm(false);
   }
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg bg-gray-200 mb-1 flex flex-row grid grid-cols-5 gap-2 pt-2">
+    <div className="z-10 max-w-sm rounded overflow-hidden shadow-lg bg-gray-200 mb-1 flex flex-row grid grid-cols-5 gap-2 pt-2">
       <div className="btns w-full col-span-1 flex flex-col item-between justify-around">
           <button onClick= {()=>{props.setShowForm(false)
           props.handleDataChange("title","")

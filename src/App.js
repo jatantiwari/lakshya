@@ -6,9 +6,11 @@ import AddTodo from './components/AddTodo';
 import ListTag from './components/ListTag';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import Footer from './components/Footer';
 
 function App() {
   const [data, setData] = useState([]);
+  const [filterData, setFilterData] = useState([])
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
@@ -27,6 +29,7 @@ function App() {
     if (storedTodos !== null) {
       todos = JSON.parse(storedTodos);
     }
+    setFilterData(todos)
     setData(todos);
     let list = [];
     for (let i = 0; i < todos.length; i++) {
@@ -37,8 +40,8 @@ function App() {
     setTagList(list)
   }, [])
 
-  const handleUpdateTagsList=()=>{
-    let list=[]
+  const handleUpdateTagsList = () => {
+    let list = []
     // console.log(data)
     for (let i = 0; i < data.length; i++) {
       if (!list.includes(data[i].tag)) {
@@ -59,7 +62,6 @@ function App() {
     if (att === "tag") {
       setTag(value)
     }
-
   }
   const handleSubmit = () => {
     newData.id = uuidv4();
@@ -79,6 +81,7 @@ function App() {
 
     let finData = data;
     finData.push(newData)
+    setFilterData(finData)
     setData(finData)
     localStorage.setItem('todos', JSON.stringify(data));
     handleUpdateTagsList()
@@ -97,6 +100,7 @@ function App() {
         break;
       }
     }
+    setFilterData(newList)
     setData(newList)
     localStorage.setItem('todos', JSON.stringify(newList));
     handleUpdateTagsList()
@@ -113,32 +117,35 @@ function App() {
         break;
       }
     }
+    setFilterData(newList)
     setData(newList);
     handleUpdateTagsList()
     localStorage.setItem("todos", JSON.stringify(newList));
   }
   const handleTaskDelete = (id) => {
-    let newList = data.filter(obj => obj.id !== id);
-    setData(newList);
-    localStorage.setItem("todos", JSON.stringify(newList));
-    handleUpdateTagsList()
-    window.location.reload();
+    if (window.confirm("Are you sure you want delete this task")) {
+      let newList = data.filter(obj => obj.id !== id);
+      setFilterData(newList);
+      setData(newList);
+      localStorage.setItem("todos", JSON.stringify(newList));
+      handleUpdateTagsList()
+      window.location.reload();
+    }
   }
   return (
-    <div className="relative grid place-items-center grid-cols-1 ">
-      <Navbar setShowForm={setShowForm} data={data} handleTaskDelete={handleTaskDelete} handleTaskDone={handleTaskDone} handleEdit={handleEdit}/>
-      <ListTag tags={tagList} data={data} handleTaskDelete={handleTaskDelete} handleTaskDone={handleTaskDone} handleEdit={handleEdit}/>
-      <div className="grid justify-center grid-cols-1 container mx-auto mt-25 px-4">
-      <div className="top-30">
-      {showForm && < AddTodo handleDataChange={handleDataChange} handleSubmit={handleSubmit} setShowForm={setShowForm} />}
-      {data.map(item => (
-        <Todos key={item.id} object={item} handleTaskDelete={handleTaskDelete} handleTaskDone={handleTaskDone} handleEdit={handleEdit} />
-      ))}
-
+    <div className="h-screen w-full flex flex-col items-center justify-between bg-blue-600">
+      <div className='w-full'>
+        <Navbar setShowForm={setShowForm} data={data} filterData={filterData} handleTaskDelete={handleTaskDelete} handleTaskDone={handleTaskDone} handleEdit={handleEdit} setData={setData} setFilterData={setFilterData} />
+        <ListTag tags={tagList} data={data} handleTaskDelete={handleTaskDelete} filterData={filterData} handleTaskDone={handleTaskDone} handleEdit={handleEdit} setData={setData} setFilterData={setFilterData} />
       </div>
+      <div className="overflow-y-scroll no-scrollbar">
+        {showForm && < AddTodo handleDataChange={handleDataChange} filterData={filterData} handleSubmit={handleSubmit} setShowForm={setShowForm} />}
+        {filterData?.map(item => (
+          <Todos key={item.id} object={item} handleTaskDelete={handleTaskDelete} filterData={filterData} handleTaskDone={handleTaskDone} handleEdit={handleEdit} />
+        ))}
       </div>
-      <div className="container bottom-0 mx-auto bg-gray-800 text-white p-4">
-        <p className="text-center">© 2024 Jatan Tiwari. All rights reserved.</p>
+      <div className="w-full">
+        <Footer />
       </div>
     </div>
   );
